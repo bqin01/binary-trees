@@ -2,9 +2,63 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/nodes.css" />
+    <title>Front End Project</title>
+    <%
+    @queue = Queue.new # Order of display
+    @queue << [1,@first_node_id]
+    def getNode(queue_elem) # This function takes an array of size 2: [Bin tree index of the node , node_id of the node]
+      if queue_elem[1] != nil
+        this_node = Node.find_by(node_id: queue_elem[1])
+        left_node = [2*queue_elem[0], this_node.left]
+        right_node = [2*queue_elem[0] + 1, this_node.right]
+        @queue.push(left_node)
+        @queue.push(right_node)
+        return true
+      end
+      return false
+    end
+    %>
+    <% @cnode = Node.find_by(node_id: @first_node_id) %>
   </head>
   <body>
-    <h1>Wow, look at this cool binary tree!</h1>
+    <div id = "info-box">
+      <h1>Currently highlighting subtree with root "<%= @cnode.content %>"</h1>
+      <h2>ID: <%= @first_node_id %> </h2>
+      <p id = "left-node-nav">
+      <% if @cnode.left == nil %>
+        <a href = "/new/left?nodeid=<%=@first_node_id%>">Create left child!</a>
+      <% else %>
+        <a href = "/node/<%= @cnode.left %>">Go to left child</a>
+      <% end %>
+      </p>
+      <p id = "right-node-nav">
+        <% if @cnode.right == nil %>
+          <a href = "/new/right?nodeid=<%=@first_node_id%>">Create right child!</a>
+        <% else %>
+          <a href = "/node/<%= @cnode.right %>">Go to right child</a>
+        <% end %>
+      </p>
+      <p id = "delete-nav">
+        <a href = "/delete/<%= @first_node_id %>">Delete node</a>
+      </p>
+    </div>
+    <div id="tree">
+      <% while !@queue.empty?()%>
+        <%
+          node_elem = @queue.pop
+          getNode(node_elem)
+          newNode = Node.find_by(node_id: node_elem[1])
+          layer = Math.log2(node_elem[0]).floor
+          pow2layer = 2 ** layer
+          percent = (node_elem[0]-pow2layer+0.5) * 100.0 / pow2layer
+        %>
+        <% if node_elem[0] != nil && node_elem[1] != nil %>
+          <div class = "node" style = "top: <%= layer*200 + 200 %>px; left: <%= percent %>%;">
+            <p><%= Node.find_by(node_id: node_elem[1]).content %></p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
   </body>
 </html>
