@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Make New Node</title>
+  </head>
+  <body>
+    <h1>Creating a new <%=@dir%> child for node "<%= Node.find_by(node_id: @nodeid).content%>"</h1>
+    <form action='/create?dir=<%=@dir%>;oldnode=<%=@nodeid%>' method='post'>
+      <p>Name for new child:
+      <input type='text' name='child_name' id='child_name'/>
+      </p>
+      <button type='submit' class='create-button'>Create node!</button>
+    </form>
+  </body>
+</html>

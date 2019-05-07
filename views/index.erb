@@ -2,7 +2,6 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="stylesheets/nodes.css" />
     <title>Front End Project</title>
     <%
     @queue = Queue.new # Order of display
@@ -19,9 +18,9 @@
       return false
     end
     %>
-    <% @cnode = Node.find_by(node_id: @first_node_id) %>
   </head>
   <body>
+    <% @cnode = Node.find_by(node_id: @first_node_id) %>
     <div id = "info-box">
       <h1>Currently highlighting subtree with root "<%= @cnode.content %>"</h1>
       <h2>ID: <%= @first_node_id %> </h2>
@@ -31,6 +30,13 @@
       <% else %>
         <a href = "/node/<%= @cnode.left %>">Go to left child</a>
       <% end %>
+      </p>
+      <p id = "parent-node-nav">
+        <% if @cnode.parent == nil %>
+          This is the root!
+        <% else %>
+          <a href = "/node/<%=@cnode.parent%>">Go to parent</a>
+        <% end %>
       </p>
       <p id = "right-node-nav">
         <% if @cnode.right == nil %>
@@ -54,7 +60,7 @@
           percent = (node_elem[0]-pow2layer+0.5) * 100.0 / pow2layer
         %>
         <% if node_elem[0] != nil && node_elem[1] != nil %>
-          <div class = "node" style = "top: <%= layer*200 + 200 %>px; left: <%= percent %>%;">
+          <div class = "node" style = "top: <%= layer*200 + 300 %>px; left: <%= percent %>%;">
             <p><%= Node.find_by(node_id: node_elem[1]).content %></p>
           </div>
         <% end %>
