@@ -22,8 +22,10 @@
   <body>
     <% @cnode = Node.find_by(node_id: @first_node_id) %>
     <div id = "info-box">
-      <h1>Currently highlighting subtree with root "<%= @cnode.content %>"</h1>
-      <h2>ID: <%= @first_node_id %> </h2>
+      <h1>Currently highlighting subtree with root "<%= @cnode.content %>" (ID: <%= @first_node_id %>)</h1>
+      <form action='/delete/<%=@first_node_id%>' method='post'>
+        <button type='submit' class='destroy-button'><p>Delete Node</p></button>
+      </form>
       <p id = "left-node-nav">
       <% if @cnode.left == nil %>
         <a href = "/new/left?nodeid=<%=@first_node_id%>">Create left child!</a>
@@ -45,9 +47,6 @@
           <a href = "/node/<%= @cnode.right %>">Go to right child</a>
         <% end %>
       </p>
-      <form action='/delete/<%=@first_node_id%>' method='post'>
-        <button type='submit' class='destroy-button'>Delete Node</button>
-      </form>
     </div>
     <div id="tree">
       <% while !@queue.empty?()%>
@@ -60,8 +59,8 @@
           percent = (node_elem[0]-pow2layer+0.5) * 100.0 / pow2layer
         %>
         <% if node_elem[0] != nil && node_elem[1] != nil %>
-          <button onclick = "window.location.href = '/node/<%=node_elem[1]%>';" class = "node" style = "top: <%= layer*200 + 300 %>px; left: <%= percent %>%;">
-            <p><%= Node.find_by(node_id: node_elem[1]).content %></p>
+          <button onclick = "window.location.href = '/node/<%=node_elem[1]%>';" class = "node" style = "top: <%= layer*200 + 300 %>px; left: <%= percent %>%; <%="background-color: rgb(55, 220, 110);" if node_elem[1]==@first_node_id %>">
+            <p style = "font-family: Dustismo;"><%= Node.find_by(node_id: node_elem[1]).content %></p>
           </button>
         <% end %>
       <% end %>

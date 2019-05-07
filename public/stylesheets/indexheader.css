@@ -1,0 +1,34 @@
+@font-face {
+    font-family: Dustismo;
+    src: url("fontfaces/dustismo.ttf");
+}
+html{
+  font-family: Dustismo;
+}
+#info-box
+{
+  margin: -25px -20px;
+  width: 102%;
+  height: 250px;
+  background-color: rgba(55, 220, 110, 0.5);
+  border: 10px solid rgb(55, 220, 110);
+}
+#info-box h1
+{
+  text-align: center;
+  padding: 20px;
+}
+.destroy-button{
+  margin: 0 auto;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  background-color: rgb(220, 55, 110);
+  font-family: Dustismo;
+    width: 150px;
+    height: 50px;
+    border: 5px solid black;
+    border-radius: 10px;
+}
+.destroy-button:hover{
+  opacity: 0.5;
+}

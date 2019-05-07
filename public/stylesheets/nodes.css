@@ -7,6 +7,12 @@
   position: absolute;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+.node:hover
+{
+  opacity: 0.5;
 }
 .node p
 {
