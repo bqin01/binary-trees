@@ -58,6 +58,24 @@ class Appl < Sinatra::Base
     end
     erb :new
   end
+  post '/delete/:nodeid' do
+    to_delete = Node.find_by(node_id: params[:nodeid])
+    if to_delete == nil || to_delete.left != nil || to_delete.right != nil || to_delete.node_id == 0
+      @nodeid = params[:nodeid]
+      erb :deleteerror
+    else
+      parent_node = Node.find_by(node_id: to_delete.parent)
+      if parent_node.left == to_delete.node_id
+        parent_node.left = nil
+        parent_node.save
+      else
+        parent_node.right = nil
+        parent_node.save
+      end
+      to_delete.destroy
+      erb :delete
+    end
+  end
   get '/:anythingelse' do
     erb :error404
   end
