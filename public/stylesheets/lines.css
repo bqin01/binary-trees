@@ -1,0 +1,15 @@
+.vert-line
+{
+  position: absolute;
+  width: 5px;
+  height: 175px;
+  background-color: black;
+  z-index: -1;
+}
+.hori-line
+{
+  position: absolute;
+  height: 5px;
+  background-color: black;
+  z-index: -1;
+}

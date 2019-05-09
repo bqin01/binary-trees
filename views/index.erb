@@ -22,33 +22,33 @@
   <body>
     <% @cnode = Node.find_by(node_id: @first_node_id) %>
     <div id = "info-box">
-      <h1>Currently highlighting subtree with root "<%= @cnode.content %>" (ID: <%= @first_node_id %>)</h1>
-      <form action='/delete/<%=@first_node_id%>' method='post'>
-        <button type='submit' class='destroy-button'><p>Delete Node</p></button>
-      </form>
-      <p id = "left-node-nav">
-      <% if @cnode.left == nil %>
-        <a href = "/new/left?nodeid=<%=@first_node_id%>">Create left child!</a>
-      <% else %>
-        <a href = "/node/<%= @cnode.left %>">Go to left child</a>
-      <% end %>
-      </p>
-      <p id = "parent-node-nav">
+      <h1>Binary Tree Simulation</h1>
+      <h2>Currently highlighting subtree with root "<%= @cnode.content %>" (ID: <%= @first_node_id %>)</h2>
+
+      <div id = "parent-node-nav">
         <% if @cnode.parent == nil %>
-          This is the root!
+          <p class = "center5050" style = "top: 170px; font-size: 24px;">This is the root!</p>
         <% else %>
-          <a href = "/node/<%=@cnode.parent%>">Go to parent</a>
+          <button class = "center5050" onclick = "window.location.href = '/node/<%=@cnode.parent%>';" style = "background-color: rgb(57, 246, 246); top: 200px;"><p style = "font-family: Dustismo;">Go to parent</p></a>
         <% end %>
-      </p>
-      <p id = "right-node-nav">
-        <% if @cnode.right == nil %>
-          <a href = "/new/right?nodeid=<%=@first_node_id%>">Create right child!</a>
-        <% else %>
-          <a href = "/node/<%= @cnode.right %>">Go to right child</a>
-        <% end %>
-      </p>
+      </div>
     </div>
     <div id="tree">
+      <% if @cnode.left == nil %>
+        <button class = "node-nav" id = "left-node-nav" onclick = "window.location.href = '/new/left?nodeid=<%=@first_node_id%>';">
+          <p style = "font-family: Dustismo;">Create left child!</p>
+        </button>
+      <% end %>
+
+      <% if @cnode.right == nil %>
+        <button class = "node-nav" id = "right-node-nav" onclick = "window.location.href = '/new/right?nodeid=<%=@first_node_id%>';">
+        <p style = "font-family: Dustismo;">Create right child!</p>
+        </button>
+      <% end %>
+
+      <form action='/delete/<%=@first_node_id%>' method='post'>
+        <button type='submit' class='destroy-button center5050'><p>Delete Node</p></button>
+      </form>
       <% while !@queue.empty?()%>
         <%
           node_elem = @queue.pop
@@ -59,9 +59,18 @@
           percent = (node_elem[0]-pow2layer+0.5) * 100.0 / pow2layer
         %>
         <% if node_elem[0] != nil && node_elem[1] != nil %>
+          <% if newNode.node_id != 0 %>
+            <div class = "vert-line" style = "top: <%= layer*200 + 100 %>px; left: <%= percent %>%;"></div>
+          <% end %>
           <button onclick = "window.location.href = '/node/<%=node_elem[1]%>';" class = "node" style = "top: <%= layer*200 + 300 %>px; left: <%= percent %>%; <%="background-color: rgb(55, 220, 110);" if node_elem[1]==@first_node_id %>">
-            <p style = "font-family: Dustismo;"><%= Node.find_by(node_id: node_elem[1]).content %></p>
+            <p style = "font-family: Dustismo;"><%= newNode.content %></p>
           </button>
+          <% if newNode.left != nil %>
+            <div class = "hori-line" style = "top: <%=layer*200 + 300 %>px; left: <%= (node_elem[0]-pow2layer+0.25)*100.0/pow2layer%>%; width: <%= 25.0 / pow2layer %>%;"></div>
+          <% end %>
+          <% if newNode.right != nil %>
+            <div class = "hori-line" style = "top: <%=layer*200 + 300 %>px; left: <%= (node_elem[0]-pow2layer+0.5)*100.0/pow2layer%>%; width: <%= 25.0 / pow2layer %>%;"></div>
+          <% end %>
         <% end %>
       <% end %>
     </div>

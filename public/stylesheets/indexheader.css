@@ -2,33 +2,38 @@
     font-family: Dustismo;
     src: url("fontfaces/dustismo.ttf");
 }
-html{
+html
+{
   font-family: Dustismo;
+}
+.center5050
+{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 #info-box
 {
   margin: -25px -20px;
   width: 102%;
   height: 250px;
-  background-color: rgba(55, 220, 110, 0.5);
+  background-color: rgba(155, 237, 180);
   border: 10px solid rgb(55, 220, 110);
 }
-#info-box h1
+#info-box h1, h2
 {
   text-align: center;
-  padding: 20px;
+  padding: 20px 0px 0px 0px;
+}
+#parent-node-nav
+{
+  margin: 40px 0px 0px 0px;
+  height: 40px;
 }
 .destroy-button{
   margin: 0 auto;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
   background-color: rgb(220, 55, 110);
   font-family: Dustismo;
-    width: 150px;
-    height: 50px;
-    border: 5px solid black;
-    border-radius: 10px;
-}
-.destroy-button:hover{
-  opacity: 0.5;
 }

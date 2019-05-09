@@ -1,0 +1,15 @@
+.node-nav{
+  top: 500px;
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: yellow;
+}
+#left-node-nav
+{
+  left: 25%;
+}
+#right-node-nav
+{
+  left: 75%;
+}
