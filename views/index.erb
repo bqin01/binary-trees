@@ -4,15 +4,15 @@
     <meta charset="utf-8">
     <title>Front End Project</title>
     <%
-    @queue = Queue.new # Order of display
+    @queue = Queue.new # Keeps track of all nodes that need to be displayed.
     @queue << [1,@first_node_id]
     def getNode(queue_elem) # This function takes an array of size 2: [Bin tree index of the node , node_id of the node]
       if queue_elem[1] != nil
         this_node = Node.find_by(node_id: queue_elem[1])
-        left_node = [2*queue_elem[0], this_node.left]
-        right_node = [2*queue_elem[0] + 1, this_node.right]
+        left_node = [2*queue_elem[0], this_node.left] # Shoutouts to CSC630 Winter Term
+        right_node = [2*queue_elem[0] + 1, this_node.right] # Shoutouts to CSC630 Winter Term
         @queue.push(left_node)
-        @queue.push(right_node)
+        @queue.push(right_node) # To process later
         return true
       end
       return false
@@ -29,7 +29,11 @@
         <% if @cnode.parent == nil %>
           <p class = "center5050" style = "top: 170px; font-size: 24px;">This is the root!</p>
         <% else %>
-          <button class = "center5050" onclick = "window.location.href = '/node/<%=@cnode.parent%>';" style = "background-color: rgb(57, 246, 246); top: 200px;"><p style = "font-family: Dustismo;">Go to parent</p></a>
+          <button class = "center5050" onclick = "window.location.href = '/node/<%=@cnode.parent%>';" style = "background-color: rgb(57, 246, 246); top: 200px;">
+            <p style = "font-family: Dustismo;">
+              Go to parent
+            </p>
+          </button>
         <% end %>
       </div>
     </div>
@@ -42,14 +46,15 @@
 
       <% if @cnode.right == nil %>
         <button class = "node-nav" id = "right-node-nav" onclick = "window.location.href = '/new/right?nodeid=<%=@first_node_id%>';">
-        <p style = "font-family: Dustismo;">Create right child!</p>
+          <p style = "font-family: Dustismo;">Create right child!</p>
         </button>
       <% end %>
-
-      <form action='/delete/<%=@first_node_id%>' method='post'>
-        <button type='submit' class='destroy-button center5050'><p>Delete Node</p></button>
-      </form>
-      <% while !@queue.empty?()%>
+      <% if @cnode.left == nil && @cnode.right == nil && @first_node_id != 0 %> <!-- Since only leaf nodes can be deleted that aren't a root, might as well check that first. -->
+        <form action='/delete/<%=@first_node_id%>' method='post'>
+          <button type='submit' class='destroy-button center5050'><p>Delete Node</p></button>
+        </form>
+      <% end %>
+      <% while !@queue.empty?()%> <!-- For every node... -->
         <%
           node_elem = @queue.pop
           getNode(node_elem)
@@ -57,18 +62,21 @@
           layer = Math.log2(node_elem[0]).floor
           pow2layer = 2 ** layer
           percent = (node_elem[0]-pow2layer+0.5) * 100.0 / pow2layer
+          # The mathematics here can be written in any Ruby script, but being able to write
+          # them here allows us to use these numbers for formatting.
+          #
         %>
-        <% if node_elem[0] != nil && node_elem[1] != nil %>
-          <% if newNode.node_id != 0 %>
+        <% if node_elem[0] != nil && node_elem[1] != nil %> <!-- Don't display it if it's a null node -->
+          <% if newNode.node_id != 0 %> <!-- Don't have the top vertical line if we're displaying the root node -->
             <div class = "vert-line" style = "top: <%= layer*200 + 100 %>px; left: <%= percent %>%;"></div>
           <% end %>
           <button onclick = "window.location.href = '/node/<%=node_elem[1]%>';" class = "node" style = "top: <%= layer*200 + 300 %>px; left: <%= percent %>%; <%="background-color: rgb(55, 220, 110);" if node_elem[1]==@first_node_id %>">
             <p style = "font-family: Dustismo;"><%= newNode.content %></p>
           </button>
-          <% if newNode.left != nil %>
+          <% if newNode.left != nil %> <!-- Left line only if the node in question has a left child -->
             <div class = "hori-line" style = "top: <%=layer*200 + 300 %>px; left: <%= (node_elem[0]-pow2layer+0.25)*100.0/pow2layer%>%; width: <%= 25.0 / pow2layer %>%;"></div>
           <% end %>
-          <% if newNode.right != nil %>
+          <% if newNode.right != nil %> <!-- Right line only if the node in question has a right child -->
             <div class = "hori-line" style = "top: <%=layer*200 + 300 %>px; left: <%= (node_elem[0]-pow2layer+0.5)*100.0/pow2layer%>%; width: <%= 25.0 / pow2layer %>%;"></div>
           <% end %>
         <% end %>

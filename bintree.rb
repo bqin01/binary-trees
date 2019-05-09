@@ -8,7 +8,7 @@ set :database_file, 'config/database.yml'
 
 class Appl < Sinatra::Base
   get '/' do
-    @first_node_id = 0
+    @first_node_id = 0 # We're viewing the root node, which is always id 0.
     erb :index
   end
   post '/create' do
