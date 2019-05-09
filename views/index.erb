@@ -51,7 +51,7 @@
       <% end %>
       <% if @cnode.left == nil && @cnode.right == nil && @first_node_id != 0 %> <!-- Since only leaf nodes can be deleted that aren't a root, might as well check that first. -->
         <form action='/delete/<%=@first_node_id%>' method='post'>
-          <button type='submit' class='destroy-button center5050'><p>Delete Node</p></button>
+          <button type='submit' class='destroy-button'><p>Delete Node</p></button>
         </form>
       <% end %>
       <% while !@queue.empty?()%> <!-- For every node... -->

@@ -33,6 +33,11 @@ html
   height: 40px;
 }
 .destroy-button{
+  position: absolute;
+  left: 50%;
+  top: 370px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   margin: 0 auto;
   background-color: rgb(220, 55, 110);
   font-family: Dustismo;
